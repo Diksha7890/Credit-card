@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment-4</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+
+        }
+
+        body {
+            background-color: beige;
+            height: 100vh;
+            width: 100vw;
+            overflow-y: hidden;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background-color: rgb(129, 129, 180);
+            height: 80vh;
+            width: 80vw;
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+
+        .heading {
+            font-size: 50px;
+            font-weight: 700;
+        }
+
+        .container {
+            border: 2px solid black;
+        }
+
+        .debit {
+            display: flex;
+            flex-direction: column;
+            gap: 1em;
+        }
+
+        .purchase-btn,
+        .available-btn,
+        .View-transction {
+            padding: 3px;
+            margin: 10px;
+            height: 5vh;
+            width: fit-content;
+            border: 2px solid black;
+            font-size: 20px;
+        }
+
+        .debit-amt {
+            width: 10vw;
+            height: 4vh;
+            border: 2px solid red;
+            margin: 4px;
+            padding: 3px;
+        }
+
+        .done {
+            padding: 2px;
+            margin: 2px;
+            border: 2px solid black;
+        }
+
+        .display {
+            font-size: 25px;
+            font-weight: 400;
+            text-align: start;
+            padding: 2px;
+
+        }
+    </style>
+</head>
+
+
+
+<body>
+    <h2 class="heading">Credit Card Statment</h2>
+    <div class="container">
+
+        <div class="debit">
+            <button class="purchase-btn">Purchase Amt</button>
+            <input type="number" class="debit-amt" placeholder="Enter value" />
+            <button class="done">DONE</button>
+        </div>
+        <div class="balance">
+            <button class="available-btn"> Check Available Amount</button>
+            <p class="availble-amt"></p>
+        </div>
+        <div class="transction">
+            <button class="View-transction">View Transctions</button>
+            <p class="debit-list"></p>
+        </div>
+        <p class="show-msg"></p>
+
+    </div>
+
+
+
+    <script>
+        class queue {
+            constructor() {
+                this.item = [];
+            }
+            eneque(elem) {
+                this.item.push(elem);
+
+            }
+            deque() {
+                if (this.item.length > 0) {
+                    return this.item.shift();
+
+                } else return ("overflow");
+            }
+            size() {
+                return this.item.length;
+            }
+            peek() {
+                return this.item[0];
+            }
+        }
+        let myQueue = new queue();
+        let CreditBalance = 25000;
+        let input = document.querySelector('.debit-amt');
+        let doneBtn = document.querySelector('.done');
+        let availablebtn = document.querySelector('.available-btn');
+        let AvailableAmount = document.querySelector('.availble-amt');
+        let ViewTransction = document.querySelector('.View-transction');
+        let Transctionlist = document.querySelector('.debit-list');
+        function Display(myQueue) {
+            while (myQueue.size() > 0) {
+                let list = document.createElement('li');
+                let each = myQueue.deque();
+                list.innerText = `${each} debit from Available balance`;
+                Transctionlist.append(list);
+                Transctionlist.classList.add('display')
+            }
+        }
+        doneBtn.addEventListener('click', () => {
+            amount = Number(input.value);
+            if (amount != 0 && CreditBalance > 0) myQueue.eneque(amount);
+            CreditBalance -= amount;
+            if (CreditBalance <= 0) CreditBalance = 0;
+            input.value = "";
+        })
+        availablebtn.addEventListener('click', () => {
+            AvailableAmount.innerText = `${CreditBalance}  Rupees`;
+            AvailableAmount.classList.add('display');
+        })
+
+        ViewTransction.addEventListener('click', () => {
+            Display(myQueue);
+        })
+
+
+    </script>
+</body>
+
+</html>
